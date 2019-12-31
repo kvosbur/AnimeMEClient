@@ -1,4 +1,6 @@
+import 'package:anime_me/Controllers/RegistrationController.dart';
 import 'package:anime_me/Screens/Login.dart';
+import 'package:anime_me/Screens/Registration.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp());
@@ -25,6 +27,7 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => LoginPage(),
+        '/registration': (context) => RegistrationPage(controller: RegistrationController(),),
       },
     );
   }

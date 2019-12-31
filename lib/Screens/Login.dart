@@ -40,16 +40,19 @@ class _LoginPageState extends State<LoginPage> {
     return null;
   }
 
+  void doRegister(){
+    Navigator.of(context).pushNamed("/registration");
+  }
+
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
-
     return Scaffold(
       backgroundColor: Colors.deepPurple,
       body: Container(
         padding: const EdgeInsets.fromLTRB(10.0, 20.0, 10.0, 20.0),
         child: Column(
           children: <Widget>[
+            //Title
             Visibility(
               visible: !(isEditingUserName || isEditingPassword),
               child: Expanded(
@@ -67,6 +70,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
             ),
+            // Picture
             Visibility(
               visible: !(isEditingUserName || isEditingPassword),
               child: Expanded(
@@ -74,6 +78,7 @@ class _LoginPageState extends State<LoginPage> {
                 child: Image(image: AssetImage('assets/naruto_chibi.png')),
               ),
             ),
+            // Forms and Buttons
             Expanded(
               flex: 3,
               child: Column(
@@ -160,7 +165,7 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       RaisedButton(
                         padding: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
-                        onPressed: doNothing,
+                        onPressed: doRegister,
                         color: Colors.deepPurple,
                         child: Text("Register",
                           style: TextStyle(
