@@ -20,4 +20,10 @@ class UserService{
 
     return json;
   }
+
+  static Future<Map<String,dynamic>> loginUserWithAuth(String authCode) async{
+    Map<String,dynamic> json = await Network.getWithHeaders("user/loginWithAuth", {"authCode": authCode});
+
+    return json;
+  }
 }

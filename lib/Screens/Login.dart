@@ -24,6 +24,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void initState() {
     super.initState();
+    widget.controller.doInitialLoginCheck(context);
 
     _focusNodeUserName.addListener(() {
       setState(() {

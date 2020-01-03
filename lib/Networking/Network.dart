@@ -38,13 +38,30 @@ class Network{
     }
   }
 
+  static Future<Map<String,dynamic>> getWithHeaders(dynamic path, Map<String,String> headers) async {
+    final response = await http.get(host + path,headers: headers);
+    if(response.statusCode == 200|| response.statusCode == 201){
+      return json.decode(response.body)["data"];
+    }else{
+      throw new HttpError(response.statusCode, json.decode(response.body));
+    }
+  }
+
   static Future<Map<String,dynamic>> post(dynamic path, Map<String,dynamic> body) async {
     Map<String,String> headers = {};
     final response = await http.post(host + path,headers: headers, body: body);
     if(response.statusCode == 200){
       return json.decode(response.body)["data"];
     }else{
-      print(response.body);
+      throw new HttpError(response.statusCode, json.decode(response.body));
+    }
+  }
+
+  static Future<Map<String,dynamic>> postWithHeaders(dynamic path, Map<String,dynamic> body, Map<String,dynamic> headers) async {
+    final response = await http.post(host + path,headers: headers, body: body);
+    if(response.statusCode == 200){
+      return json.decode(response.body)["data"];
+    }else{
       throw new HttpError(response.statusCode, json.decode(response.body));
     }
   }
@@ -52,7 +69,6 @@ class Network{
   static Future<Map<String,dynamic>> delete(dynamic path) async {
     Map<String,String> headers = {};
     final response = await http.delete(host + path,headers: headers);
-    print("TESTING DELETE: "+response.body);
     if(response.statusCode == 200){
       return json.decode(response.body);
     }else{
@@ -63,7 +79,6 @@ class Network{
   static Future<Map<String,dynamic>> put(dynamic path, Map<String,String> headers) async {
     Map<String,String> headers = {};
     final response = await http.put(host + path,headers: headers);
-    print("TESTING GET: "+response.body);
     if(response.statusCode == 200){
       return json.decode(response.body);
     }else{
@@ -73,9 +88,7 @@ class Network{
 
   static Future<Map<String,dynamic>> postJsonBody(dynamic path, Map<String,String> headers, Map<String,dynamic> body) async {
     Map<String,String> headers = {"Content-Type": "application/json"};
-    print("headers: " + headers.toString());
     final response = await http.post(host + path,headers: headers, body: json.encode(body));
-    print("TESTING POST: "+response.body);
     if(response.statusCode == 200){
       return json.decode(response.body);
     }else{

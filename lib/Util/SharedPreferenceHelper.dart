@@ -10,9 +10,15 @@ class SharedPreferenceHelper{
     prefs.setString(key, value);
   }
 
-  static Future<dynamic> getSingleItem(String key) async{
+  static Future<String> getSingleItem(String key) async{
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getString(key);
+  }
+
+  static Future<bool> checkSharedPref(String key) async
+  {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.containsKey(key);
   }
 
 }

@@ -58,4 +58,23 @@ class LoginController{
       }
     }
   }
+
+  void doInitialLoginCheck(BuildContext context) async{
+    // check to see if authCode is in sharedPreferences or not
+    bool exists = await SharedPreferenceHelper.checkSharedPref("authCode");
+    if(exists){
+      // do process to login user using the authcode
+      String authCode = await SharedPreferenceHelper.getSingleItem("authCode");
+      try{
+        Map<String, dynamic> response = await UserService.loginUserWithAuth(authCode);
+        print(response);
+        Navigator.of(context).pushReplacementNamed("/main");
+      }on HttpError catch(e){
+        //error occurred in logging in user
+        MyToast.showToast(e.message, Colors.white, Colors.red);
+        print(e);
+      }
+
+    }
+  }
 }
