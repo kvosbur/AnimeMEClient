@@ -45,9 +45,9 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void doRegister() async{
-    dynamic authCode = await Navigator.of(context).pushNamed("/registration");
-    if(authCode != null){
-      print("AUTH CODE:" + authCode.toString());
+    Map<String, dynamic> authResponse = await Navigator.of(context).pushNamed("/registration");
+    if(authResponse != null){
+      widget.controller.successfulRegister(authResponse, context);
     }
   }
 

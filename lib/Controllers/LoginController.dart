@@ -1,6 +1,9 @@
 
 
 
+import 'package:anime_me/Networking/Network.dart';
+import 'package:anime_me/Networking/UserService.dart';
+import 'package:anime_me/Util/SharedPreferenceHelper.dart';
 import 'package:anime_me/Util/Toast.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -28,10 +31,31 @@ class LoginController{
     return toRet;
   }
 
+  Future<void> saveLoginResponse(Map<String, dynamic> response) async{
+    await SharedPreferenceHelper.setString("authCode", response["authCode"]);
+    await SharedPreferenceHelper.setString("adminType", response["adminType"].toString());
+  }
+
+  void successfulRegister(Map<String, dynamic> authResponse, BuildContext context) async{
+    await saveLoginResponse(authResponse);
+    Navigator.of(context).pushReplacementNamed("/main");
+  }
+
   void doLogin(String username, String password, BuildContext context,
       List<FocusNode> nodes) async{
     if(doLoginValidation(username, password, context, nodes)){
       //must pass validation to continue with login
+      try{
+        Map<String, dynamic> response = await UserService.loginUser(username, password);
+        MyToast.showToast("Account Login Successfull", Colors.white, Colors.blue);
+        //save returned authCode and adminType to sharedPreferences
+        await saveLoginResponse(response);
+        Navigator.of(context).pushReplacementNamed("/main");
+      }on HttpError catch(e){
+        //error occurred in registering user
+        MyToast.showToast(e.message, Colors.white, Colors.red);
+        print(e);
+      }
     }
   }
 }

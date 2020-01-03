@@ -1,3 +1,4 @@
+import 'package:anime_me/Controllers/LoginController.dart';
 import 'package:anime_me/Controllers/RegistrationController.dart';
 import 'package:anime_me/Screens/Login.dart';
 import 'package:anime_me/Screens/Registration.dart';
@@ -26,8 +27,9 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: '/',
       routes: {
-        '/': (context) => LoginPage(),
+        '/': (context) => LoginPage(controller: LoginController(),),
         '/registration': (context) => RegistrationPage(controller: RegistrationController(),),
+        '/main': (context) => MyHomePage(title: "Title",),
       },
     );
   }

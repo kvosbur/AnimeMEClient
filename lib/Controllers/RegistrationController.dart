@@ -56,7 +56,7 @@ class RegistrationController{
     if(validateSubmission(email, userName, password, reenterPassword, context, nodes)){
       //must pass validation in order to continue with process
       try{
-        String authCode = await UserService.registerUser(email, userName, password);
+        Map<String, dynamic> authCode = await UserService.registerUser(email, userName, password);
         MyToast.showToast("Account Creation Successfull", Colors.white, Colors.blue);
         Navigator.of(context).pop(authCode);
       }on HttpError catch(e){

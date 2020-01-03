@@ -44,6 +44,7 @@ class Network{
     if(response.statusCode == 200){
       return json.decode(response.body)["data"];
     }else{
+      print(response.body);
       throw new HttpError(response.statusCode, json.decode(response.body));
     }
   }
