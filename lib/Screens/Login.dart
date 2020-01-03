@@ -1,6 +1,10 @@
+import 'package:anime_me/Controllers/LoginController.dart';
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatefulWidget {
+
+  final LoginController controller;
+  LoginPage({this.controller});
 
   @override
   _LoginPageState createState() => _LoginPageState();
@@ -19,8 +23,8 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
+    widget.controller.doInitialLoginCheck(context);
 
     _focusNodeUserName.addListener(() {
       setState(() {
@@ -37,14 +41,20 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void doNothing(){
-    return null;
+    widget.controller.doLogin(_userNameController.text, _passwordController.text,
+    context, <FocusNode>[_focusNodeUserName, _focusNodePassword]);
   }
 
   void doRegister() async{
-    dynamic authCode = await Navigator.of(context).pushNamed("/registration");
-    if(authCode != null){
-      print("AUTH CODE:" + authCode.toString());
+    Map<String, dynamic> authResponse = await Navigator.of(context).pushNamed("/registration");
+    if(authResponse != null){
+      widget.controller.successfulRegister(authResponse, context);
     }
+  }
+
+  void _shiftFocus(BuildContext context, FocusNode base, FocusNode next){
+    base.unfocus();
+    FocusScope.of(context).requestFocus(next);
   }
 
   @override
@@ -115,6 +125,8 @@ class _LoginPageState extends State<LoginPage> {
                     child: TextField(
                       focusNode: _focusNodeUserName,
                       controller: _userNameController,
+                      textInputAction: TextInputAction.next,
+                      onSubmitted: (temp) =>_shiftFocus(context, _focusNodeUserName, _focusNodePassword),
                     ),
                   ),
                   Expanded(
