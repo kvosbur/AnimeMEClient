@@ -1,3 +1,5 @@
+import 'package:anime_me/Networking/Network.dart';
+import 'package:anime_me/Networking/UserService.dart';
 import 'package:anime_me/Util/Toast.dart';
 import 'package:flutter/material.dart';
 import 'package:email_validator/email_validator.dart';
@@ -49,10 +51,19 @@ class RegistrationController{
 
 
   void submitRegistration(String email, String userName, String password, String reenterPassword,
-      BuildContext context, List<FocusNode> nodes){
+      BuildContext context, List<FocusNode> nodes) async{
 
     if(validateSubmission(email, userName, password, reenterPassword, context, nodes)){
       //must pass validation in order to continue with process
+      try{
+        String authCode = await UserService.registerUser(email, userName, password);
+        MyToast.showToast("Account Creation Successfull", Colors.white, Colors.blue);
+        Navigator.of(context).pop(authCode);
+      }on HttpError catch(e){
+        //error occurred in registering user
+        MyToast.showToast(e.message, Colors.white, Colors.red);
+        print(e);
+      }
     }
   }
 }

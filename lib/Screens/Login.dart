@@ -40,8 +40,11 @@ class _LoginPageState extends State<LoginPage> {
     return null;
   }
 
-  void doRegister(){
-    Navigator.of(context).pushNamed("/registration");
+  void doRegister() async{
+    dynamic authCode = await Navigator.of(context).pushNamed("/registration");
+    if(authCode != null){
+      print("AUTH CODE:" + authCode.toString());
+    }
   }
 
   @override
