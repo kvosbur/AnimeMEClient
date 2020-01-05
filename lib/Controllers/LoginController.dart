@@ -67,7 +67,6 @@ class LoginController{
       String authCode = await SharedPreferenceHelper.getSingleItem("authCode");
       try{
         Map<String, dynamic> response = await UserService.loginUserWithAuth(authCode);
-        print(response);
         Navigator.of(context).pushReplacementNamed("/main");
       }on HttpError catch(e){
         //error occurred in logging in user
